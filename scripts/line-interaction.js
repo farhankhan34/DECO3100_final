@@ -1,3 +1,4 @@
+
 var csvData;
 var allCountryNames;
 var listofCountries = [];
@@ -56,6 +57,7 @@ function stretch(n, start1, stop1, start2, stop2) {
 function make_plot(csv_data, currentCountry) {
   let country_data = csv_data.filter((d) => d.country == currentCountry); // UPDATED with currentCountry
 
+  /*
   //To normalise our data, we need to know the minimum and maximum values
   //Math.min doesn't work with strings so we need to convert
   let mortality_data = country_data.map((d) => Number(d.mortality));
@@ -85,6 +87,7 @@ function make_plot(csv_data, currentCountry) {
     //Make sure to un-normalise for displaying on the plot
     extension_y.push(stretch(prediction, 0, 1, min_mortality, max_mortality));
   }
+  */
 
   let data = [
     {
@@ -93,11 +96,12 @@ function make_plot(csv_data, currentCountry) {
       mode: "lines"
     },
     //adding our extension as a second trace
+    /*
     {
       x: extension_x,
       y: extension_y,
       mode: "lines"
-    }
+    } */
   ];
 
   Plotly.newPlot("myDiv", data);
