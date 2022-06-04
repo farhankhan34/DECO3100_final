@@ -232,4 +232,12 @@ button, .button {
 .img-editor-desktop, .img-laptop-desktop {
   display: none;
 }
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
 /*# sourceMappingURL=style.css.map */

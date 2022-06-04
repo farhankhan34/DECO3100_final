@@ -3,6 +3,7 @@ var allData = [];
 var allTheCountryNames = [];
 var listOfTheCountries = [];
 var pieData = [];
+var lineData = [];
 var pieChartColors = [
   ['rgb(56, 75, 126)','rgb(79, 129, 102)'],
   ['rgb(177, 127, 38)', 'rgb(205, 152, 36)']
@@ -44,7 +45,11 @@ function main(data){
     // call the make plot function using the global allData variable, and a default country
    processHistoricEnergyConsumptionData(defaultCountry);
    process2020EnergyConsumptionData(defaultCountry);    
+   processHistoricEnergyConsumptionDataForLineGraph(defaultCountry);
+
    drawPiePlot();
+   showBrazil();
+   drawLinePlot();
     
 }
 
@@ -72,6 +77,24 @@ function updateCountry() {
   process2020EnergyConsumptionData(myCountrySelector.value);
   
   drawPiePlot();
+
+  if (myCountrySelector.value == 'Brazil') {
+    showBrazil();
+  } else {
+    showNorway();
+  }
+}
+
+function showBrazil() {
+  document.getElementById('brazil-vis-comment').removeAttribute('class', 'hide');
+  document.getElementById('norway-vis-comment').setAttribute('class', 'hide');
+
+}
+
+function showNorway() {
+  document.getElementById('norway-vis-comment').removeAttribute('class', 'hide');
+  document.getElementById('brazil-vis-comment').setAttribute('class', 'hide');
+
 }
 
 
@@ -179,6 +202,58 @@ function updateCountry() {
  }
 
 
+ function processHistoricEnergyConsumptionDataForLineGraph($selectedCountry) {
+
+  
+  var years =[] , primary_values = [], renewable_values = [];
+
+
+
+
+
+
+
+  for (var i = 0; i < allData.length; i++) {
+    if(  allData[i]['country'] == $selectedCountry && allData[i]['year'] > 1965){
+       years.push(  allData[i]['year'] );
+       primary_values.push(allData[i]['primary_energy_consumption']);    
+       renewable_values.push(allData[i]['renewables_consumption']);    
+    }
+  }
+  // Do the average and set for pie graph
+ 
+
+  //console.log( 'X',labels, 'Y',values);
+  //drawPiePlot(labels, values, $controlId);
+ 
+ var historic_data = [
+   {
+      y: primary_values,
+      x: years,
+      type: "scatter",
+      mode: 'lines',
+      name: 'Primary Consumption',
+      line: {
+        color: 'rgb(255, 128, 128)',
+        width: 3
+      }
+   }
+   ,
+   {
+      y: renewable_values,
+      x: years,
+      type: "scatter",
+      mode: 'lines',
+      name: 'Renewable Consumption',
+      line: {
+        color: 'rgb(128, 255, 128)',
+        width: 3
+      }
+   }
+  ];
+
+  lineData = historic_data;
+ }
 
  function drawPiePlot(){
 
@@ -193,6 +268,18 @@ function updateCountry() {
 
 
    Plotly.newPlot(controlID, pieData, layout);
+ };
+
+ function drawLinePlot(){
+
+  var layout = {
+    height: 600,
+    width: 1200,
+  
+  };
+
+
+   Plotly.newPlot('line-chart-container', lineData, layout);
  };
 
  makePiePlot();
