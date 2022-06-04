@@ -19,6 +19,27 @@
     //position: relative;
 }
 
+.row { display: flex;}
+.col-12{
+    width: 100%;
+    padding: 15px;
+    border: 1px solid black;
+}
+
+.col-6 {
+    width: 50%;
+    padding: 15px;
+    border: 1px solid black;
+}
+
+.pie-chart-container{
+    width: 100vw;
+    min-width: 100vw;     
+    height: 580px;
+    border: 1px solid greenyellow;
+   
+}
+
 .content-wrapper {
     display: flex;
     flex-direction: column;

@@ -2,6 +2,12 @@ var myCountrySelector = document.querySelector(".farhan");
 var allData = [];
 var allTheCountryNames = [];
 var listOfTheCountries = [];
+var pieData = [];
+var pieChartColors = [
+  ['rgb(56, 75, 126)','rgb(79, 129, 102)'],
+  ['rgb(177, 127, 38)', 'rgb(205, 152, 36)']
+];
+var controlID = 'pie-chart-container';
 var $dataSource = "https://raw.githubusercontent.com/farhankhan34/DECO3100A3/main/owid-energy-data_with_graphs-brazil-norway.csv";
 
     
@@ -36,10 +42,9 @@ function main(data){
     assignOptions(listOfTheCountries, myCountrySelector,defaultCountry);
 
     // call the make plot function using the global allData variable, and a default country
-    processHistoricEnergyConsumptionData(defaultCountry);
-    process2020EnergyConsumptionData(defaultCountry);
-    
-
+   processHistoricEnergyConsumptionData(defaultCountry);
+   process2020EnergyConsumptionData(defaultCountry);    
+   drawPiePlot();
     
 }
 
@@ -63,14 +68,16 @@ function assignOptions(textArray, selector,selectedCountry) {
 myCountrySelector.addEventListener("change", updateCountry, false);
 
 function updateCountry() {
-    processHistoricEnergyConsumptionData(myCountrySelector.value);
-    process2020EnergyConsumptionData(myCountrySelector.value);
+  processHistoricEnergyConsumptionData(myCountrySelector.value);
+  process2020EnergyConsumptionData(myCountrySelector.value);
+  
+  drawPiePlot();
 }
 
 
  function process2020EnergyConsumptionData($selectedCountry) {
 
-    $controlId = 'pie-chart-2020'
+  //  $controlId = 'pie-chart-2020'
  //console.log(allData);
   var labels =[] , values = [];
 
@@ -89,12 +96,31 @@ function updateCountry() {
      
   }
   //console.log( 'X',labels, 'Y',values);
-  drawPiePlot(labels, values, $controlId);
+  //drawPiePlot(labels, values, $controlId);
+
+  var latest_data = {
+    values: values,
+    labels: labels,
+    type: "pie",
+    name: '2020 Data',
+    textinfo: "label+percent",
+    insidetextorientation: "radial",
+    marker: {
+     colors: pieChartColors[1]
+   },
+    domain: {
+     row: 0,
+     column: 1
+   },
+  };
+
+  pieData.push(latest_data);
+
  }
 
  function processHistoricEnergyConsumptionData($selectedCountry) {
 
-    $controlId = 'pie-chart-history'
+  //  $controlId = 'pie-chart-history'
  //console.log(allData);
   var labels =[] , values = [];
 
@@ -113,49 +139,60 @@ function updateCountry() {
 
   
 
-  //
-   if (row['country'] == $selectedCountry && row['year'] >= 1965 && row['year'] < 2020 ) {
-    sample_count++;
-    // Doing the sum  
-    
-    renewables_consumption =+ parseFloat( row['renewables_consumption']) ;       
-    non_renewables_consumption =+ (parseFloat(row['primary_energy_consumption']) -parseFloat( row['renewables_consumption'])); 
-
-   }
-     
-   
-
+      //
+      if (row['country'] == $selectedCountry && parseInt(row['year']) >= 1965 && parseInt(row['year']) < 2020 ) {
+        if(parseFloat( row['renewables_consumption'])> 0 &&  parseFloat(row['primary_energy_consumption']) > 0){
+          sample_count++;
+        // Doing the sum  
+        
+          renewables_consumption =+ parseFloat( row['renewables_consumption']) ;       
+          non_renewables_consumption =+ (parseFloat(row['primary_energy_consumption']) -parseFloat( row['renewables_consumption'])); 
+        }  
+      }
   }
-
   // Do the average and set for pie graph
   labels.push( 'Renewable consumption' );
   values.push(renewables_consumption/sample_count);
   labels.push( 'Non-Renewable consumption' );
   values.push(non_renewables_consumption/sample_count);
 
-  console.log( 'X',labels, 'Y',values);
-  drawPiePlot(labels, values, $controlId);
+  //console.log( 'X',labels, 'Y',values);
+  //drawPiePlot(labels, values, $controlId);
+ 
+ var historic_data = {
+    values: values,
+    labels: labels,
+    type: "pie",
+    name: 'Historical Data',
+    textinfo: "label+percent",
+    insidetextorientation: "radial",
+    marker: {
+     colors: pieChartColors[0]
+   },
+    domain: {
+     row: 0,
+     column: 0
+   },
+  };
+
+  pieData.push(historic_data);
  }
 
- function drawPiePlot( $labels, $values , $pControlId){
 
-   var pieData = [{
-     values: $values,
-     labels: $labels,
-     type: "pie",
-     textinfo: "label+percent",
-     insidetextorientation: "radial"
-   }];
 
-   var layout = [{
-    height: 700,
-    width: 700,
-    title: "Pie Chart for Energy"
-  }];
+ function drawPiePlot(){
 
 
 
-   Plotly.newPlot($pControlId, pieData, layout);
+
+  var layout = {
+    height: 600,
+    width: 1200,
+    grid: {rows: 1, columns: 2}
+  };
+
+
+   Plotly.newPlot(controlID, pieData, layout);
  };
 
  makePiePlot();
