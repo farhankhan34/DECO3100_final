@@ -1,43 +1,93 @@
-.section {
+section {
     //border: 1px solid black;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 25px 10rem;
+    margin: auto;
+    max-width: 40rem;
+    padding: 0;
 
-    padding: 10.2rem 2.5rem 0 2.5rem;
+    p {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+}
 
-    h2 {
+section.earth { 
+    padding: 15px 105px;
+    margin: auto;
+    max-width: none;
+   
+    img {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 300px;             
+    }
+    
+    .sub-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;        
+        text-align: center;
+        margin: 25px auto;  
         color: $headings;
         font-size: 2.6rem;
-        font-weight: 100;
+        font-weight:600;    
     }
 
-
-
-    //position: relative;
+    .sub-header-two {
+        display: flex;
+        justify-content: center;
+        align-items: center;        
+        text-align: center;
+        margin: 25px auto; 
+        color: $headings;
+        font-size: 1.3rem;
+        font-weight: 100;
+    }
 }
+
+.brazil-vis-comment {
+    padding: 10.2rem 2.5rem 0 2.5rem;
+}
+
+.brazil2-vis-comment {
+    padding: 10.2rem 2.5rem 0 2.5rem;
+}
+
+.norway-vis-comment {
+    padding: 10.2rem 2.5rem 0 2.5rem;
+}
+
+.norway2-vis-comment {
+    padding: 10.2rem 2.5rem 0 2.5rem;
+}
+
+
 
 .row { display: flex;}
 .col-12{
-    width: 100%;
+    width: 90vw;
     padding: 15px;
-    border: 1px solid black;
+   
 }
 
 .col-6 {
     width: 50%;
     padding: 15px;
-    border: 1px solid black;
+   
 }
 
 .pie-chart-container{
     width: 100vw;
     min-width: 100vw;     
-    height: 580px;
-    border: 1px solid greenyellow;
-   
+    height: 580px;   
 }
 
 .content-wrapper {
@@ -57,36 +107,7 @@
     transform: scale(1.25);
 }
 
-.text-block {
-    //border: 1px solid black;
-    text-align: center;
-    width: 98%;
 
-    h1 {
-        color: $headings;
-        font-size: 2.6rem;
-        font-weight:600;
-    }
-
-    h3 {
-        color: $headings;
-        font-size: 2.8rem;
-        margin-top: 4.2rem;
-        line-height: 3.2rem;
-
-        span {
-            display: block;
-        }
-    }
-
-    p {
-        margin-top: 2.5rem;
-        font-size: 1rem;
-        color: $text-blue;
-        line-height: 1.5rem;
-        font-weight: 300;
-    }
-}
 
 .img-laptop {
     //border: 1px solid red;

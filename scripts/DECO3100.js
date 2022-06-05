@@ -5,12 +5,17 @@ var listOfTheCountries = [];
 var pieData = [];
 var lineData = [];
 var pieChartColors = [
-  ['rgb(56, 75, 126)','rgb(79, 129, 102)'],
-  ['rgb(177, 127, 38)', 'rgb(205, 152, 36)']
+  ['34E89E','D9D9D9'],
+  ['34E89E', 'D9D9D9']
 ];
 var controlID = 'pie-chart-container';
-var $dataSource = "https://raw.githubusercontent.com/farhankhan34/DECO3100A3/main/owid-energy-data_with_graphs-brazil-norway.csv";
+var $dataSourceEnergyUse = "https://raw.githubusercontent.com/farhankhan34/DECO3100A3/main/owid-energy-data_with_graphs-brazil-norway.csv";
 
+var config = {
+  responsive: true,
+  scrollZoom: false,
+  displayModeBar: false,
+};
     
 //console.log("ALERT");
 
@@ -54,7 +59,7 @@ function main(data){
 }
 
 function makePiePlot() {
-  Plotly.d3.csv($dataSource,function(data){ main(data); } );
+  Plotly.d3.csv($dataSourceEnergyUse,function(data){ main(data); } );
 }; 
 
 
@@ -75,6 +80,7 @@ myCountrySelector.addEventListener("change", updateCountry, false);
 function updateCountry() {
   processHistoricEnergyConsumptionData(myCountrySelector.value);
   process2020EnergyConsumptionData(myCountrySelector.value);
+  processHistoricEnergyConsumptionDataForLineGraph(myCountrySelector.value);
   
   drawPiePlot();
 
@@ -83,17 +89,46 @@ function updateCountry() {
   } else {
     showNorway();
   }
+
+  drawLinePlot();
 }
 
 function showBrazil() {
+  /*
   document.getElementById('brazil-vis-comment').removeAttribute('class', 'hide');
   document.getElementById('norway-vis-comment').setAttribute('class', 'hide');
+  document.getElementById('brazil2-vis-comment').removeAttribute('class', 'hide');
+  document.getElementById('norway2-vis-comment').setAttribute('class', 'hide');
+  */
 
+  const brazils = document.querySelectorAll('[data-id="brazil"]');
+  brazils.forEach(function(item) {    
+    item.removeAttribute('class', 'hide');
+  });
+  const norways = document.querySelectorAll('[data-id="norway"]')
+  norways.forEach(function(item) {    
+    item.setAttribute('class', 'hide');
+  });
 }
 
 function showNorway() {
+  /*
   document.getElementById('norway-vis-comment').removeAttribute('class', 'hide');
   document.getElementById('brazil-vis-comment').setAttribute('class', 'hide');
+  document.getElementById('norway2-vis-comment').removeAttribute('class', 'hide');
+  document.getElementById('brazil2-vis-comment').setAttribute('class', 'hide');
+  */
+ 
+
+  const brazils = document.querySelectorAll('[data-id="brazil"]');
+  brazils.forEach(function(item) {    
+    item.setAttribute('class', 'hide');
+  });
+  const norways = document.querySelectorAll('[data-id="norway"]')
+  norways.forEach(function(item) {    
+    item.removeAttribute('class', 'hide');
+  });
+  
 
 }
 
@@ -122,11 +157,12 @@ function showNorway() {
   //drawPiePlot(labels, values, $controlId);
 
   var latest_data = {
+    showlegend: true, 
     values: values,
     labels: labels,
     type: "pie",
     name: '2020 Data',
-    textinfo: "label+percent",
+    textinfo: "percent",
     insidetextorientation: "radial",
     marker: {
      colors: pieChartColors[1]
@@ -135,6 +171,14 @@ function showNorway() {
      row: 0,
      column: 1
    },
+   title: {
+    text:'2020 Data',
+    font: {     
+      size: 20
+    },    
+    x: 0.05,
+    y:0,
+  },
   };
 
   pieData.push(latest_data);
@@ -174,20 +218,21 @@ function showNorway() {
       }
   }
   // Do the average and set for pie graph
-  labels.push( 'Renewable consumption' );
+  labels.push( 'Renewable Consumption (1965 - 2020)' );
   values.push(renewables_consumption/sample_count);
-  labels.push( 'Non-Renewable consumption' );
+  labels.push( 'Non-Renewable Consumption (1965 - 2020)' );
   values.push(non_renewables_consumption/sample_count);
 
   //console.log( 'X',labels, 'Y',values);
   //drawPiePlot(labels, values, $controlId);
  
  var historic_data = {
+    showlegend: true,
     values: values,
     labels: labels,
     type: "pie",
     name: 'Historical Data',
-    textinfo: "label+percent",
+    textinfo: "percent",
     insidetextorientation: "radial",
     marker: {
      colors: pieChartColors[0]
@@ -196,6 +241,12 @@ function showNorway() {
      row: 0,
      column: 0
    },
+   title: {
+    text:'Historical Data',
+    font: {      
+      size: 20,     
+    } 
+  },
   };
 
   pieData.push(historic_data);
@@ -260,26 +311,48 @@ function showNorway() {
 
 
 
-  var layout = {
-    height: 600,
-    width: 1200,
-    grid: {rows: 1, columns: 2}
+  var layout = {   
+    margin: {
+      l: 50,
+      r: 150,
+      b: 50,
+      t: 50,
+      pad: 40
+    },
+    grid: {rows: 1, columns: 2},
+    legend: {
+      x: 0.4,
+      y: -0.3
+    },
+
+
+   
   };
 
 
-   Plotly.newPlot(controlID, pieData, layout);
+   Plotly.newPlot(controlID, pieData, layout, config);
  };
 
  function drawLinePlot(){
 
   var layout = {
-    height: 600,
-    width: 1200,
+    
+    margin: {
+      l: 150,
+      r: 150,
+      b: 50,
+      t: 50,
+      pad: 40
+    },
+    legend: {
+      x: 0.4,
+      y: -0.5
+    },
   
   };
 
 
-   Plotly.newPlot('line-chart-container', lineData, layout);
+   Plotly.newPlot('line-chart-container', lineData, layout, config);
  };
 
  makePiePlot();
