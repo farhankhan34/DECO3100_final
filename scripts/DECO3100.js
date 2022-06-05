@@ -9,7 +9,7 @@ var pieChartColors = [
   ['34E89E', 'D9D9D9']
 ];
 var controlID = 'pie-chart-container';
-var $dataSourceEnergyUse = "https://raw.githubusercontent.com/farhankhan34/DECO3100A3/main/owid-energy-data_with_graphs-brazil-norway.csv";
+var $dataSourceEnergyUse = "https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv";
 
 var config = {
   responsive: true,
@@ -38,10 +38,11 @@ function main(data){
 
     for (var i = 0; i < allTheCountryNames.length; i++) {  
      // console.log(listOfTheCountries) ;         // for all of the countries found in csv
+     if (allTheCountryNames[i] == 'Brazil' || allTheCountryNames[i] == 'Norway') {
       if(listOfTheCountries.indexOf(allTheCountryNames[i]) === -1){
         listOfTheCountries.push(allTheCountryNames[i]);
       }
-    
+     }
    }
 
     // Pass the country list and HTML select element to create the options
@@ -172,7 +173,7 @@ function showNorway() {
      column: 1
    },
    title: {
-    text:'2020 Data',
+    text:'Energy consumption (%) in 2020',
     font: {     
       size: 20
     },    
@@ -242,7 +243,7 @@ function showNorway() {
      column: 0
    },
    title: {
-    text:'Historical Data',
+    text:'Average share of energy (%) since 1965',
     font: {      
       size: 20,     
     } 

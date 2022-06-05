@@ -20,7 +20,31 @@ class CO2EmissionPlot {
               legend: {
                 x: 0.4,
                 y: -0.5
-              },      
+              },   
+              annotations: [
+                {
+                  y: 557.901,
+                  x: 2014,
+                  xref: 'x',
+                  yref: 'y',
+                  text: 'The Paris Agreement',
+                  showarrow: true,
+                  arrowhead: 7,
+                  ax: 0,
+                  ay: -40
+                },
+                {
+                    y: 45.078,
+                    x: 2014,
+                    xref: 'x',
+                    yref: 'y',
+                    text: 'The Paris Agreement',
+                    showarrow: true,
+                    arrowhead: 7,
+                    ax: 0,
+                    ay: -40
+                  }
+              ]   
         };
 
         this.config = {
